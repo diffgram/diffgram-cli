@@ -17,6 +17,7 @@
   "author": "Diffgram",
   "license": "ISC",
   "dependencies": {
+    "prompt-checkbox": "^2.2.0",
     "yargs": "^17.5.1"
   }
 }

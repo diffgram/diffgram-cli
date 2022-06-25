@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const yargs = require("yargs")
 const create_action = require('./utils/action')
+const create_dev_container = require('./utils/container')
 
 const usage = "\nDiffgram CLI:";
 const options = yargs
@@ -11,5 +12,6 @@ const options = yargs
           describe: 'Name of your new Diffgram action'
         })
       }, create_action)
+    .command('compose', 'Creates a docker-compose file for development environment', create_dev_container)
     .help(true)
     .argv;
