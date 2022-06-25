@@ -45,8 +45,8 @@ const prompt = new Prompt({
     choices: [ ...Object.keys(templateMap) ]
   });
 
-function create_dev_container () {
-    const file_to_create = `${process.cwd()}/docker-compose-dev.yaml`
+function createDevContainer () {
+    const fileToCreate = `${process.cwd()}/docker-compose-dev.yaml`
     
     const baseComposeFileBuffer = readModuleFile("../snippets/docker-compose/base.txt");
     const baseTemplate = baseComposeFileBuffer.toString()
@@ -68,9 +68,9 @@ function create_dev_container () {
                     servicesTemplate += '\n'
                 })
             const composeReady = baseTemplate.replace(replacer, servicesTemplate)
-            fs.writeFileSync(file_to_create, composeReady);
+            fs.writeFileSync(fileToCreate, composeReady);
             console.log('Now you can run your dev container with "docker-compose -f docker-compose-dev.yaml up"')
         })
 }
 
-module.exports = create_dev_container;
+module.exports = createDevContainer;
