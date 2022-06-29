@@ -1,7 +1,11 @@
+const util = require('util');
 const { exec, spawn } = require('node:child_process');
 
+const execSync = util.promisify(exec);
+
 function up() {
-    const ls = spawn('docker-compose')
+    const ls = spawn('docker-compose', ['-f', 'docker-compose-dev.yaml', 'up'])
+    
     ls.stdout.on('data', function (data) {
         console.log('stdout: ' + data.toString());
       });
@@ -14,9 +18,16 @@ function up() {
         console.log('stderr: ' + data.toString());
       });
       
-    // ls.on('exit', function (code) {
-    //     console.log('child process exited with code ' + code.toString());
-    //   });
+    ls.on('exit', function (code) {
+      console.log('child process exited with code ' + code.toString());
+      process.exit()
+    });
+
+    process.stdin.resume();
+    process.on('SIGINT', async function() {
+        await execSync('docker-compose stop')
+        ls.kill()
+    });
 }
 
 module.exports = up
