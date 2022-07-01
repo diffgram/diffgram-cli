@@ -28,7 +28,7 @@ import action_config_mixin from "../action_config_mixin";
 import ActionStepsConfig from '../ActionStepsConfig';
 
 export default {
-  name: "NewAction",
+  name: "NewName",
   mixins: [action_config_mixin],
   components: {
     action_config_base,

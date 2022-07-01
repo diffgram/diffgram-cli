@@ -24,6 +24,23 @@ function action({ NewActionName }) {
     const frontendSnippet = frontendTemplate.replace(replacer, NewActionName)
     fs.mkdirSync(`${frontendRootDir}/action_configurations/${NewActionName}`)
     fs.writeFileSync(`${frontendRootDir}/action_configurations/${NewActionName}/${NewActionName}.vue`, frontendSnippet);
+
+    //Register frontend component
+    const frontendImportFileBuffer = readModuleFile("../snippets/FrontendImport.txt");
+    const frontendImportTemplate = frontendImportFileBuffer.toString()
+    const importSnippet = frontendImportTemplate.replace(replacer, NewActionName)
+
+    const frontendDeclareFileBuffer = readModuleFile("../snippets/FrontendRegister.txt");
+    const frontendDeclareTemplate = frontendDeclareFileBuffer.toString()
+    const declareSnippet = frontendDeclareTemplate.replace(replacer, NewActionName)
+
+    const initialFile = fs.readFileSync(`${frontendRootDir}/component_mapping.js`, 'utf8');
+    const initialTemplate = initialFile.toString()
+    
+    const templateWIthImportAdded = initialTemplate.replace("//IMPORTREPLACE", importSnippet)
+    const templateWIthDeclareAdded = templateWIthImportAdded.replace("//DECLAREREPLACE", declareSnippet)
+
+    fs.writeFileSync(`${frontendRootDir}/component_mapping.js`, templateWIthDeclareAdded);
 }
 
 module.exports = action;
