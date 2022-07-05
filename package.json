@@ -18,7 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
+    "g": "^2.0.1",
     "prompt-checkbox": "^2.2.0",
+    "prompt-radio": "^1.2.1",
     "yargs": "^17.5.1"
   }
 }
