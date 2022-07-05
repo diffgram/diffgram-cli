@@ -6,12 +6,13 @@ from eventhandlers.action_runners.base.ActionCompleteCondition import ActionComp
 
 class NewNameAction(ActionRunner):
     public_name = 'NewName'
+    description = ''
     icon = 'https://www.svgrepo.com/show/46774/export.svg'
     kind = 'NewName'  # The kind has to be unique to all actions
     category = 'some_category'  # Optional
 
     # What events can this action listen to?
-    trigger = ActionTrigger(default_event = 'some_diffgram_event',
+    trigger_data = ActionTrigger(default_event = 'some_diffgram_event',
                             event_list = ['some_diffgram_event'])
 
     # What pre-conditions can this action have?
