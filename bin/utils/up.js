@@ -1,9 +1,17 @@
+const fs = require("fs");
 const util = require('util');
 const { exec, spawn } = require('node:child_process');
 
 const execSync = util.promisify(exec);
 
 function up() {
+    const fileExists = fs.existsSync('docker-compose-dev.yaml')
+    if (!fileExists) {
+      console.log("Development docker-compose file does'nt exist")
+      console.log('Run "diffgram compose" to create one')
+      return
+    }
+
     const ls = spawn('docker-compose', ['-f', 'docker-compose-dev.yaml', 'up'])
     
     ls.stdout.on('data', function (data) {

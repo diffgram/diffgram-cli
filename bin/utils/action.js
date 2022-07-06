@@ -22,7 +22,13 @@ function action({ NewActionName }) {
     const frontendFileBuffer = readModuleFile("../snippets/NewActionFrontend.txt");
     const frontendTemplate = frontendFileBuffer.toString()
     const frontendSnippet = frontendTemplate.replace(replacer, NewActionName)
-    fs.mkdirSync(`${frontendRootDir}/action_configurations/${NewActionName}`)
+
+    const folderAlreadyExists = fs.existsSync(`${frontendRootDir}/action_configurations/${NewActionName}`)
+
+    if (!folderAlreadyExists) {
+        fs.mkdirSync(`${frontendRootDir}/action_configurations/${NewActionName}`)
+    }
+    
     fs.writeFileSync(`${frontendRootDir}/action_configurations/${NewActionName}/${NewActionName}.vue`, frontendSnippet);
 
     //Register frontend component
