@@ -9,6 +9,16 @@ Diffgram CLI is command line interface for developers who want to contribute to 
 npm install -g diffgram-cli
 ```
 
+Install dev version
+```
+npm i -g .
+```
+
+Run without installation:
+```
+node bin/index.js [command name]
+```
+
 ## Usage
 
 Change your directory to the diffgram first. To see what's available on CLI, run:
