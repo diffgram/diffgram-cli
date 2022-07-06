@@ -1,4 +1,5 @@
 const Prompt = require('prompt-checkbox');
+const Radio = require('prompt-radio');
 const fs = require("fs");
 const readModuleFile = require('../tools/readModuleFile')
 
@@ -45,12 +46,16 @@ const prompt = new Prompt({
     choices: [ ...Object.keys(templateMap) ]
   });
 
-function createDevContainer () {
-    const fileToCreate = `${process.cwd()}/docker-compose-dev.yaml`
-    
-    const baseComposeFileBuffer = readModuleFile("../snippets/docker-compose/base.txt");
-    const baseTemplate = baseComposeFileBuffer.toString()
+const radio = new Radio({
+    name: 'secrets',
+    message: 'Docker file already exists, do you want to overrride it?',
+    choices: [
+      'Yes',
+      'No',
+    ]
+  });
 
+const setDevContainer = (fileToCreate, baseTemplate) => {
     prompt.run()
         .then(function(answers) {
             if (answers.length === 0) {
@@ -71,6 +76,29 @@ function createDevContainer () {
             fs.writeFileSync(fileToCreate, composeReady);
             console.log('Now you can run your dev container with "docker-compose -f docker-compose-dev.yaml up"')
         })
+}
+
+function createDevContainer () {
+    const fileToCreate = `${process.cwd()}/docker-compose-dev.yaml`
+    
+    const baseComposeFileBuffer = readModuleFile("../snippets/docker-compose/base.txt");
+    const baseTemplate = baseComposeFileBuffer.toString()
+
+    const alreadyExists = fs.existsSync(fileToCreate)
+
+    if (alreadyExists) {
+        radio.run()
+            .then(function(answer) {
+                if (answer === 'Yes') {
+                    setDevContainer(fileToCreate, baseTemplate)
+                } else {
+                    console.log("Compose file wasn't updated")
+                }
+            });
+        return
+    }
+
+    setDevContainer(fileToCreate, baseTemplate)
 }
 
 module.exports = createDevContainer;
